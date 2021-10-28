@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	int bud[15];
+	int cun=0;
+	int sheng=0;
+	for(int i=1;i<=12;i++) {
+		scanf("%d",&bud[i]);
+	}
+	bool flag=0;
+	for(int i=1;i<=12;i++) {
+		sheng+=300;
+		if(sheng<bud[i]) {
+			printf("-%d\n",i);
+			flag=1;
+			break;
+		}
+		sheng=sheng-bud[i];
+		if(sheng>100) {
+			while(sheng>100) {
+				cun+=100;
+				sheng-=100;
+			}
+		}
+	}
+	if(!flag) {
+		cun=cun*1.2;
+		printf("%d\n",cun+sheng);
+	}
+	return 0;
+}

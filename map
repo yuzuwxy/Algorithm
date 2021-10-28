@@ -1,0 +1,226 @@
+//为啥今天来了呢
+
+做了这么一道题，觉得map实在是太有用了
+
+https://ac.nowcoder.com/acm/contest/12794/B
+
+这个题的意思是呢，给出缩写和缩写表示的实际意思，比如：yyds 永远单身。这个样子，然后给出一句话，单词和单词之间用空格分开，要把这句含有所写的句子扩成完整的。
+
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<cstring>
+#include<cmath>
+#include<algorithm>
+#include<vector>
+#include<set>
+
+using namespace std;
+
+#define ll long long
+#define MAXN (int)1e5
+#define MOD (int)1e9+7
+
+int main() {
+    int n,m;
+    scanf("%d",&n);
+    getchar();
+    vector<string> sx(55);
+    string tr[100];
+    for(int i=1;i<=n;i++) {
+        string temp;
+        cin>>sx[i];
+        getchar();  
+        getline(cin,tr[i]);
+    }
+    scanf("%d",&m);
+    getchar();
+    int arr[MAXN]={0};
+    for(int i=1;i<=m;i++) {
+        string se;
+        getline(cin,se);
+        int len=se.size();
+        for(int j=1;j<=n;j++) {
+            size_t pos=se.find(sx[j],0);      //这里，虽然每个缩写各不相同，用find找待翻译的句子里有什么缩写出现还是有bug。比如一个缩写是另一个缩写的子串，那我最后对应哪个呢？就会出错
+            if(pos!=string :: npos) {
+                arr[(int)pos]=j;
+            }
+        }
+        for(int j=0;j<len;j++) {
+            if(arr[j]!=0&&(j==0||(j>0&&se[j-1]==' '))&&(se[j+sx[arr[j]].size()]==' '||(j+(int)sx[arr[j]].size()==len))) {
+                printf("%s",tr[arr[j]].c_str());
+                j+=sx[arr[j]].size();
+            }
+            if(j!=len)
+                printf("%c",se[j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+
+//这是我的垃圾代码，拿到测试数据之后才发现了问题。
+//甚至还想过hash，但是实在不会。
+
+//然后去看了标程，发现map真是惊人的好用。
+定义map<string,string> s 甚至可以直接拿字符串当索引，我天梦想中的生活。
+
+//这就是拿map写的标程
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+
+int n,m;
+map<string,string>mp;       //用string 查找string
+int main()
+{
+    cin>>n;
+    string s1,s2,s3;
+    while(n--){
+        cin>>s1;
+        getchar();
+        getline(cin,s2);
+        mp[s1]=s2;
+    }
+    cin>>m;
+    getchar();
+    while(m--){
+        getline(cin,s3);
+        s3+='\n';
+        int p=0;
+        string s;
+        for(int i=0; i<s3.size(); i++){
+            if(s3[i]==' '||s3[i]=='\n'){
+                string t=s3.substr(p,i-p);
+                if(mp.count(t)){
+                    s+=mp[t];
+                } else {
+                    s+=t;
+                    }
+                s+=s3[i];
+                p=i+1;       //这个用p标记单词开头的写法有点神奇呀
+            }
+        }
+        cout<<s;
+    }
+    return 0;
+}
+
+//来总结map
+
+map的格式为map<key,value> mapp  
+map的所有元素都是成对的，同时具有键值（key）和实值（value），键值具有唯一性，map里的元素会根据键值自动排序，底层机制由红黑树实现。
+
+数据的插入
+可以使用insert函数插入value_type类型的数据，格式这个样子：
+void TestMap2()
+{
+    map<int, string> map2;
+    map2.insert(map<int, string>::value_type(1, "one"));
+    map2.insert(map<int, string>::value_type(2, "two"));
+    map2.insert(map<int, string>::value_type(3, "three"));
+    map<int, string>::iterator iter = map2.begin();
+    while (iter != map2.end())
+    {
+        cout << iter->first << " " << iter->second << endl;      //运行结果就是依次输出map里的每一对元素
+        iter++;
+    }
+}
+//我大概是不会这么写的吧，太麻烦了点也
+
+也可以使用数组的形式插入元素
+void TestMap3()
+{
+    map<int, string> map3;
+    map3[1] = "one";
+    map3[2] = "two";
+    map3[3] = "three";
+    map<int, string>::iterator iter;
+    for (iter = map3.begin(); iter != map3.end(); iter++)
+    {
+        cout << iter->first << " " << iter->second << endl;
+    }
+}
+//简单粗暴，就这么写
+
+//还有一点神神奇奇的方法，什么把pair插入，什么用pair的第二的元素判断是不是成功插入元素啦太难了也太麻烦了就算了
+
+//然后要注意一点就是如果键值重复，后插入的元素就会覆盖前面的已经赋过值的元素。
+
+数据的遍历
+用迭代器正向遍历
+    上面的程序举例用到过了
+用迭代器反向遍历
+void TestMap3()
+{
+    map<int, string> map3;
+    map3[1] = "one";
+    map3[2] = "two";
+    map3[3] = "three";
+    map<int, string>::iterator iter;
+    for (iter = map3.rbegin(); iter != map3.rend(); iter++)      //这句话加一个r
+    {
+        cout << iter->first << " " << iter->second << endl;
+    }
+}
+//迭代器真的写起来好长
+
+用数组遍历
+void TestMap3()
+{
+    map<int, string> map3;
+    map3[1] = "one";
+    map3[2] = "two";
+    map3[3] = "three";
+    for (int i=1;i<=map3.size();i++)        //注意从1开始的嗷，不是0
+    {
+        cout <<map[i]<< endl;           //数组虽然简单，但是只能用来搞键值是数字的噢
+    }
+}
+//好叭迭代器还是香一点
+
+void TestMap8()
+{
+    //用迭代器删除
+    iter = map8.find(1);                    //找到关键字"1"的地址，删除这个元素
+    map8.erase(iter);
+    cout << "删除关键字1后的数据为：" << endl;
+    for (iter = map8.begin(); iter != map8.end(); iter++)
+    {
+        cout << iter->first << " " << iter->second << endl;
+
+    }
+    cout << endl;
+
+    //用关键字删除
+    int n = map8.erase(1);                  //参数直接是关键字，删除这一条数据。
+    cout << "删除关键字1后的数据为：" << endl;
+    for (iter = map8.begin(); iter != map8.end(); iter++)
+    {
+        cout << iter->first << " " << iter->second << endl;
+    }
+    cout << endl;
+
+    //用迭代器删除区间
+    map8.erase(map8.begin(), map8.end());           //直接删空了，但是肯定可以map8.begin()+x什么的
+    cout << "删除后的数据为：" << endl;
+    for (iter = map8.begin(); iter != map8.end(); iter++)
+    {
+        cout << iter->first << " " << iter->second << endl;
+    }
+}
+//使用erase删除元素，如果成功就会返回1，否则返回0。
+
+//然后其他的一些常用的函数
+clear()：数据的清空。
+empty()：数据的判空。
+size()：获取有效元素的大小。
+count()：获取键值中查找元素的个数。如果有返回1，否则返回0。//count是头文件algorithm里的函数，其他的容器也用。由于map键值唯一，所以对于map来说返回值只有0和1.相当于find()啦
+rbegin()：在反向迭代器中表示起始元素。
+rend()：在反向迭代器中表示末尾元素。
+operator[key]：通过键值（key）获取该key对应的value。
+at(key)：通过键值（key）获取该key对应的value。
+lower_bound(val):返回容器中第一个值【大于或等于】val的元素的iterator位置。
+upper_bound(val): 返回容器中第一个值【大于】。

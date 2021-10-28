@@ -1,0 +1,40 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<bits/stdc++.h>
+#define MAXN 100100
+using namespace std;
+bool pf[MAXN];
+int pr[MAXN];
+int topp=-1;
+
+bool prime() {
+	for(int i=2;i<MAXN;i++) {
+		if(!pf[i])
+			pr[++topp]=i;
+		for(int j=0;j<=topp&&pr[j]*i<MAXN;j++) {
+			pf[pr[j]*i]=true;
+			if(i%pr[j]==0) break;
+			}
+	}
+}
+
+int main() {
+	vector<int> pri;
+	int L;
+	int sum=0;
+	scanf("%d",&L);
+	prime();
+	for(int i=2;i<=L;i++) {
+		if(!pf[i]) {
+			if(sum+i<=L) {
+				pri.push_back(i);
+				printf("%d\n",i);
+				sum+=i;
+			}
+			else break;
+		}
+	}
+	printf("%d\n",pri.size());
+	return 0;
+}

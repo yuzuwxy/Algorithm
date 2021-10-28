@@ -1,0 +1,87 @@
+给定一个单词，请你输出它在给定的文章中出现的次数和第一次出现的位置。注意：匹配单词时，不区分大小写，但要求完全匹配，即给定单词必须与文章中的某一独立单词在不区分大小写的情况下完全相同，如果给定
+单词仅是文章中某一单词的一部分则不算匹配。
+
+输入格式
+共2行。
+第1行为一个字符串，其中只含字母，表示给定单词；
+第2行为一个字符串，其中只可能包含字母和空格，表示给定的文章。
+
+输出格式
+一行，如果在文章中找到给定单词则输出两个整数，两个整数之间用一个空格隔开，分别是单词在文章中出现的次数和第一次出现的位置（即在文章中第一次出现时，单词首字母在文章中的位置，位置从0开始）；如果
+单词在文章中没有出现，则直接输出一个整数−1。
+
+
+
+//我的垃圾代码，希望有一天能改一下
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	string word;
+	string sen[10010];
+	getline(cin,word);
+	int i=1;
+	string s;
+	getline(cin,s);
+	stringstream io(s);
+	while(io>>sen[i]) {
+		for(int j=0;j<sen[i].size();j++) {
+			if(sen[i][j]>='A'&&sen[i][j]<='Z') 
+				sen[i][j]-=32;
+		}
+		i++;
+	}
+	for(int j=0;j<word.size();j++) {
+		if(word[j]<='Z'&&word[j]>='A')
+			word[j]-=32;
+	}
+	int tim=0;
+	int fi=0,ans;
+	//bool flag=0;
+	for(int j=2;j<=i;j++) {
+		fi+=sen[j-1].size()+1;
+		if(sen[j]==word) {
+			tim++;
+			if(!fi) ans=fi-1;
+		}
+	}
+	if(sen[1]==word) tim++,ans=0;
+	printf("%d %d\n",tim,ans);
+	return 0;
+}	
+
+
+
+//AC代码，这个循环方式太厉害啦！！
+//结果我没AC
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+	string word;
+	string sent;
+	getline(cin,word);
+	getline(cin,sent);
+	for(int i=0;i<word.size();i++) {
+		word[i]=toupper(word[i]);
+	}
+	for(int i=0;i<sent.size();i++) {
+		sent[i]=toupper(sent[i]);
+	}
+	int lenw=word.size()						
+	int lens=sent.size();
+	int t=0,pos;
+	for(int i=0;i<=lens-lenw;i++) {						//划重点！！！！注意理解循环方式，理解判断指标
+		int j;								
+		for(j=0;j<lenw;++j) {
+			if(sent[i+j]!=word[j]) break;
+			if(i>0&&sent[i-1]!=' ') break;
+		}
+		if(j==lenw&&(sent[i+j]==' '||i+j==lens)) {
+			t++;
+			if(t==1) pos=i;
+		}
+	}
+	if(t==0) cout<<-1<<endl;
+	else cout<<t<<' '<<pos<<endl;
+	return 0;
+}

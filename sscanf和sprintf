@@ -1,0 +1,30 @@
+类似于stringstream对数据类型进行转换
+//当然不是把 a 转化成数字这种智障操作
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(int argc, char const *argv[])
+{
+	float f1;
+	int f2;
+	string s = "123.456";
+	sscanf(s.c_str(), "%f", &f1);  // 将字符串s读入浮点类型变量f1中
+	sscanf(s.c_str(), "%d", &f2);  // 将字符串s读入int型变量f2中
+    cout << f1 << " " << f2 << " " << f1+f2 << endl;
+	
+	char str[10] = "123";
+	sscanf(str, "%d", &f2); // char类型数组无需用 .c_str 进行转化
+	cout << f2 << endl;
+
+	sprintf(str, "%f", 156.3456);  //将浮点数转化为字符串保留在字符数组str中
+	cout << str << endl;
+
+	// 综合使用
+	char c[100] = "2018-07-15:21.05,hello", temp[100];
+	int year, month, day;
+	float time;
+	sscanf(c, "%d-%d-%d:%f,%s", &year, &month, &day, &time, temp);
+	printf("year=%d,month=%02d,day=%02d,time=%.2f,temp=%s\n", year, month, day, time, temp);
+	return 0;
+}

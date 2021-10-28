@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+int a[10100],b[10100],c[10100];
+char a1[10100],b1[10100],mi[10100];
+int main() {
+	cin>>a1;
+	cin>>b1;
+	if((strlen(a1)<strlen(b1))||(strlen(a1)==strlen(b1)&&strcmp(a1,b1)<0)) {
+		strcpy(mi,a1);
+		strcpy(a1,b1);
+		strcpy(b1,mi);
+		cout<<'-';
+	}    //负数
+	int lena=strlen(a1);
+	int lenb=strlen(b1);
+	for(int i=0;i<=lena-1;i++) a[lena-i]=a1[i]-'0';
+	for(int i=0;i<=lenb-1;i++) b[lenb-i]=b1[i]-'0';
+	int lenc=1;
+	int x=0;
+	while(lenc<=lena||lenc<=lenb) {
+		if(a[lenc]<b[lenc]) {
+			a[lenc]+=10;
+			a[lenc+1]--;
+		}
+		c[lenc]=a[lenc]-b[lenc];
+		lenc++;
+	}
+	while(c[lenc]==0&&lenc>1) lenc--;   //注意这里跟高精加不同
+	for(int i=lenc;i>=1;i--) cout<<c[i];
+	cout<<endl;
+	return 0;
+}

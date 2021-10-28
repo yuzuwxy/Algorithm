@@ -1,0 +1,298 @@
+//比较神奇以前从来没看过（为啥我突然觉得字体变大了）
+简介：
+    可以理解为有个问题需要你解决，你通过输入某些东西表示你要问系统的问题，这时系统会回答你的问题。
+    在代码中的回答方式就是会输入某个东西就是系统给你的答案，通过这些信息你可以得到问题的解。
+    你是不可以自己测试的，只能提交给系统测试。
+    //不太懂，看例题叭
+
+第一道例题：
+https://codeforces.com/contest/1167/problem/B
+题意：一个包含6个元素的数字序列，进行不超过四次询问，询问内容为下标为i和j的两个数的乘积。输入的是答案，输出的是询问内容和可能的一个数字序列。
+     噢英语也不太好，数字序列里的数字是定的，就是排列顺序不一样。
+思路：好暴力啊这个题。
+//还是有点东西
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define ll long long
+//交互，就是人机交互的交互
+int a[6]={4,8,15,16,23,42};
+int db[6];
+
+int main() {
+    for(int i=1;i<=4;i++) {
+        printf("? %d %d\n",i,i+1);        //系统测试的时候，这里输出的数其实是向系统输入的数
+        fflush(stdout);
+        scanf("%d",&db[i]);               //这里输入的数实际是系统输出的数
+    }
+
+    do{
+        if(a[0]*a[1]==db[1]&&a[1]*a[2]==db[2]&&a[2]*a[3]==db[3]&&
+            a[3]*a[4]==db[4])
+        break;
+    }while(next_permutation(a,a+6));         //这个函数是库里的STL函数，全排列函数（根据字典序）。do{}while()相当于是固定格式
+    printf("!");
+    for(int i=0;i<6;i++) {
+        printf(" %d",a[i]);
+    }
+    cout<<endl;
+    return 0;
+}
+//啊我也不知道怎么说自己悟吧
+
+第二道例题：
+https://codeforces.com/problemset/problem/679/A
+题意：在[2,100]之间有一个隐藏的数字想要知道是素数还是合数，可以进行最多20次询问。询问的方式是输入一个数然后回答输入的数是否是隐藏的数字的因子。所有询问完成之后回答这个数是素数还是合数。
+思路：最多能问20次，那我就问20次肯定问的出来。判断是否是素数的方法一般是循环[2,sqrt(x)],如果有一个数可以整除就说明不是素数。然后仔细想想100开根号也不过是10，也许可以直接循环？
+//试试
+//试试就逝世。有问题。如果这个数是22以内的素数，那就是只有一个数可以被整除；如果是22以外的素数，那就没有数字可以被整除；如果在22以内只有一个因数的合数，也只有一个数被整除。所以遍历所有数计数不可行。
+//没法用判断素数的方法跑那就用判断合数的方法跑。合数的性质就是可以写成若干个素数的乘积，也就是说如果是合数必然有一个素数是因子。那就问素数，如果有一个素数是因子，就说明不是。最多询问20次，找到20个素数：
+2 3 5 7 11 13 17 19 23 29 31 37 41 43 47，如果47是因数，那另一个最多是2到了96，97是质数，98有2,99有3，那就完了，问这么多应该就够了，试试。
+如果是这部分的素数，会有一个因数；如果不是这部分的素数就没有因数；如果是合数，也有可能只有一个因子，如果是某个数的平方的话，如果是立方平方数会再加一个因子。平方数是100以内的也只有2，3，5。
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define ll long long
+
+int main() {
+    int prime[20]={2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,4,9,25,49};    //打表
+    int ans=0;
+    for(int i=0;i<=18;i++) {    
+        printf("%d\n",prime[i]);
+        fflush(stdout);
+        char ch[10];
+        scanf("%s",ch);
+        if(strcmp(ch,"yes")==0) ans++;
+    }
+    if(ans<=1) printf("prime\n");
+    else printf("composite\n");        //英语单词还是复制粘贴吧自己打要错的
+    return 0;
+}
+
+//自己做咯
+https://vjudge.net/problem/CodeForces-1451E1/origin
+遭遇滑铁卢
+题目的意思大概是一个数字序列长度为n(保证是2的幂次),可以根据数组索引对任意两个数的AND，OR，XOR进行询问，询问次数不超过n+2,求的是这个数字序列。
+//英语不好交互题的题目死难看
+沙雕思路：一个数跟0按位或得到的还是这个数，所以让第一个数是0，然后依次问每个数跟这个数的或，只需要问n-1次。好憨啊主要是没啥思路。
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define ll long long
+
+int main() {
+    ll n;
+    scanf("%lld",&n);
+    vector<ll> arr(n+1);
+    arr[0]=0;
+    for(ll i=1;i<n;i++) {
+        printf("OR %lld 0\n",i);
+        fflush(stdout);
+        ll ans;
+        scanf("%lld",&ans);
+        arr[i]=ans;
+    }
+    printf("!");
+    for(ll i=0;i<n;i++) {
+        printf(" %lld",arr[i]);
+    }
+    printf("\n");
+    return 0;
+}
+大概就是不能自己定数组里的数吧，人家可能有唯一答案┭┮﹏┭┮
+翻了题解：
+设 x = a + b , y = a + c , z = b + c
+因为 a + b = ( a ⊕ b ) + 2 ∗ ( a & b )     //咱也不知道为啥先记着吧
+而 ( a ⊕ b ) ⊕ ( a ⊕ c ) = b ⊕ c，所以只需要知道 a & b , a & c , b & c , a ⊕ b , a ⊕ c 这五项就能算出x , y , z 三个数，进而推出 a , b , c  三个数，最后剩下的 n − 3个数，只要一次 ⊕ 就可以解决，因此总共查询的次数为 5 + n − 3 = n + 2次
+位运算真的是太优美了（划掉）
+淦啊好强，这谁能想到啊
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define ll long long
+
+int main() {
+    int n;
+    scanf("%d",&n);
+    vector<int> res(n+1,0);
+    int ab1,ab2,ac1,ac2,bc1,bc2;
+    int x,y,z;
+    printf("XOR 1 2\n");
+    fflush(stdout);
+    scanf("%d",&ab1);
+
+    printf("AND 1 2\n");    
+    fflush(stdout);
+    scanf("%d",&ab2);
+
+    printf("XOR 1 3\n");
+    fflush(stdout);
+    scanf("%d",&ac1);
+
+    printf("AND 1 3\n");
+    fflush(stdout);
+    scanf("%d",&ac2);
+
+    bc1=ab1^ac1;
+
+    printf("AND 2 3\n");
+    fflush(stdout);
+    scanf("%d",&bc2);
+
+    x=ab1+2*ab2;
+    y=ac1+2*ac2;
+    z=bc1+2*bc2;
+
+    res[1]=(x+y-z)/2;
+    res[2]=(x+z-y)/2;
+    res[3]=(y+z-x)/2;
+
+    int p;
+    for(int i=4;i<=n;i++) {
+        printf("XOR 1 %d\n",i);
+        fflush(stdout);
+        scanf("%d",&p);
+        res[i]=p^res[1];          //这里还有一个式子a^b^a=b
+    }
+    printf("!");
+    for(int i=1;i<=n;i++) {
+        printf(" %d",res[i]);
+    }
+    printf("\n");
+    fflush(stdout);
+    return 0;
+}
+
+https://codeforces.com/problemset/problem/1451/E2
+//来了，更难得版本
+题意：简单版用了神奇但是我一点都不懂的位运算。困难版相对没有那么数学其实。
+      困难版和简单版的区别在于一个询问次数是n+2次一个是n+1次（都不会啊呜呜呜）。
+      这题一个需要注意的点是数字的个数跟数字的范围是一致的。
+      需要知道的重要的位运算相关的式子有a^b^a=b;a^a=0;if a^b==c^b ,a==c
+      很容易想到的一种情况是序列里的数字各不相同，可以数遍数字范围的所有数，但是这样的话要确定用简单版的办法需要n+2次。
+      //重点来了，我自己哪能想出来这么厉害的办法，看网上大佬题解会了的：
+      按位异或相同的位得到0不同的位得到1，那找到跟第一个数异或（当然是跟第一个数啦完全不会做也可以想到所有的数都要跟第一个数异或eemm参照最开始的沙雕想法）后为1的数，那这个数字跟第一个
+      数相差1，这个数跟第一个数按位并，就会得到两个数中的较小数（因为前面的数是一样的最后一个数不同得到0，一定是较小数），那如何确定第一个数是较小数还是较大数呢？
+      找到与第一个数按位异或之后结果为2的数，这个数跟第一个数只有转化为二进制后的倒数第二个数不同，最后一位数是相同的，那就让这个数再跟第一个数取并。
+      按位与的运算法则是均为1时结果才为1，所以按位与之后的结果可以确定第一个数的最后一位数。
+      两次并之后，确定了第一个数，然后再把后面的数的异或结果进行一次异或运算，就可以得到所有的数。
+//虽然看了大佬的思路但是自己写了代码，然后wa在了第32个点
+//发现最近越来越不爱改bug，一改bug就想干别的，可能是课设后遗症
+//第32个点wa而且不给我标为啥就离谱
+
+//我确实离谱
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define ll long long
+
+int main() {
+    ll n;
+    scanf("%lld",&n);
+    vector<int> res(n+1,0);
+    //先依次询问跟第一个数的异或（因为连续异或会得到原数）
+    vector<ll> Xore(n+1,0);
+    int zero=-1;
+    for(int i=2;i<=n;i++) {    //数字序列的序号有没有要求我忘记了qwq
+        printf("XOR %d 1\n",i);
+        fflush(stdout);
+        ll ans;
+        scanf("%lld",&ans);
+        Xore[i]=ans;
+        if(ans==0) zero=i;
+    }
+    //两个相同的数最后异或得到0
+    if(zero!=-1) {
+        //就是有一个数跟第一个数一样的意思
+        printf("AND %d 1\n",zero);
+        fflush(stdout); 
+        ll ans;
+        scanf("%lld",&ans);
+        res[1]=ans;
+        /*
+        for(int i=2;i<=n;i++) {
+            res[i]=Xore[i]^res[1];               <改bug：这个要删掉，最后做这个>
+        }
+        */
+    }
+    else {
+        //没有跟第一个数相同的数，那就要找是不是有后面两个数一样
+        //我记得时间卡到2，循环跑了，不是再想办法
+        int same1=0,same2=0;
+        for(int i=2;i<n;i++) {
+            for(int j=i+1;j<=n;j++) {
+                if(Xore[i]==Xore[j]) {  //找到了
+                    same1=i;
+                    same2=j;
+                }
+            }
+        }
+        if(same1&&same2) {  //找到了
+            printf("AND %d %d\n",same1,same2);
+            fflush(stdout);
+            ll ans;
+            scanf("%lld",&ans);
+            /*
+            res[same1]=ans;
+            res[same2]=ans;             <改bug：这两句删掉，因为最后要对所有的数再跟第一个进行一次异或，所以除了第一个数后面都应该是第一次异或的结果，不能填原数,同理下一句也改了>
+            */
+            //res[1]=Xore[same1]^res[same1];
+            res[1]=Xore[same1]^ans;
+        }
+        //也可能每个数都不一样，然后根据大佬的思路，找的是跟第一个数异或得到1的数（这个数与第一个数除了最后一位其他都一样）和异或的得到2的数（这个数跟第一个数除了倒数的第二位都一样）
+        //那这两个数分别跟第一个数并得到的数就可以知道前面一样的数、确定不一样的数
+        else {
+            int temp1=0,temp2=0;
+            for(int i=2;i<=n;i++) {
+                if(Xore[i]==1) {
+                    temp1=i;
+                    break;
+                }
+            }
+            //一定会有这个数的，因为数的范围和数的个数刚好是一样的
+            for(int i=2;i<=n;i++) 
+                if(Xore[i]==2) {
+                    temp2=i;
+                    break;
+                }
+            ll ans1;;
+            printf("AND %d 1\n",temp1);  
+            fflush(stdout);
+            scanf("%lld",&ans1);    //这个数只有最后一个数不确定，异或为2的数只有倒数第二个数不一样，所以可以通过异或为2的数跟第一个数的并确定倒数第一个数。
+            //确定了倒数第一个数，并之后的数就可以是第一个数）
+            ll ans2;
+            printf("AND %d 1\n",temp2);
+            fflush(stdout);
+            scanf("%lld",&ans2);
+            /*
+            if((ans2&1LL)!=(ans1&1LL)) {//最后一位数需要修改
+                if(((ans2&1LL)==0)&&((ans1&1LL)==1)) {
+                    res[1]=ans1-1;
+                }
+                if(((ans2&1)==1)&&((ans1&1)==0)) {           <改bug：这一段应该是没问题，但是第二遍看的时候改的稍微不那么丑陋一点>
+                    res[1]=ans1+1;
+                }
+            }
+            */
+            //因为ans1一定是较小数，最后一位一定是0，所以只需要判断ans2最后一位是不是1
+            if(ans2%2==1) {//最后一位数需要修改
+                res[1]=ans1+1;
+            }
+            else res[1]=ans1;
+        }
+    }
+    for(int i=2;i<=n;i++)
+        res[i]=Xore[i]^res[1];
+    printf("!");
+    for(int i=1;i<=n;i++) {
+        printf(" %d",res[i]);
+    }
+    printf("\n");
+    return 0;
+}    
+//嘻嘻夸一夸自己

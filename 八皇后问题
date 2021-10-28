@@ -1,0 +1,150 @@
+//今天看了八皇后问题，递归递推和回溯一直都不太会的样子
+//下面是思路（当然摘自百度百科
+八皇后问题如果用穷举法需要尝试88=16,777,216种情况。
+每一列放一个皇后，可以放在第 1 行，第 2 行，……，直到第8行。
+穷举的时候从所有皇后都放在第1行的方案开始，检验皇后之间是否会相互攻击。如果会，把列H的皇后挪一格，验证下一个方案。
+移到底了就“进位”到列G的皇后挪一格，列H的皇后重新试过全部的8行。这种方法是非常低效率的，因为它并不是哪里有冲突就调整哪里，而是盲目地按既定顺序枚举所有的可能方案。
+
+回溯算法优于穷举法。将列A的皇后放在第一行以后，列B的皇后放在第一行已经发生冲突。
+这时候不必继续放列C的皇后，而是调整列B的皇后到第二行，继续冲突放第三行，不冲突了才开始进入列C。
+如此可依次放下列A至E的皇后，如图2所示。将每个皇后往右边横向、斜向攻击的点位用叉标记，发现列F的皇后无处安身。
+这时回溯到列E的皇后，将其位置由第4行调整为第8行，进入列F，发现皇后依然无处安身，再次回溯列E。此时列E已经枚举完所有情况，回溯至列D，将其由第2行移至第7行，再进入列E继续。
+按此算法流程最终找到如图3所示的解，成功在棋盘里放下了8个“和平共处”的皇后。继续找完全部的解共92个。
+回溯算法求解八皇后问题的原则是：有冲突解决冲突，没有冲突往前走，无路可走往回退，走到最后是答案。
+为了加快有无冲突的判断速度，可以给每行和两个方向的每条对角线是否有皇后占据建立标志数组。放下一个新皇后做标志，回溯时挪动一个旧皇后清除标志。
+
+//然后下面琢磨一下代码
+//百度上的代码可读性过于差了
+
+//应该是第一种写法叭
+//将皇后的位置用行储存，只需要用单维数组 queen[column]=row ,表示这个皇后的位置在第column列、第row行。然后对列进行回溯与判断，每一列判断该列的每一行是否适合放置皇后，如果适合就存储。
+//然后对下一列进行判断
+
+#include<bits/stdc++.h>
+#include<iostream>
+#include<cstdio>
+
+using namespace std;
+
+int queen[10];
+//int row;
+//int  count;
+
+bool islegal(int curcolumn,int currow) {
+	for(int precolumn=1;precolumn<curcolumn;precolumn++) {
+		int prerow=queen[precolumn];
+		if(prerow==currow) return false;
+		
+		int rowdiff=abs(prerow-currow) ;
+		int coldiff=abs(precolumn-curcolumn);
+		if(rowdiff==coldiff) return false;
+	}
+	
+	return true;
+}
+
+int c;
+
+void eightqueen(int curcolumn) {
+	for(int row=1;row<=8;row++) {
+		if(islegal(curcolumn,row)) {
+			queen[curcolumn]=row;
+			if(curcolumn!=8) {
+				eightqueen(curcolumn+1);
+			}
+			else {
+				c++;
+			}
+		}
+	}
+}
+
+int main() {
+	eightqueen(1);
+	printf("%d\n",c);
+	return 0;
+}
+
+//我的丑陋的代码
+
+
+
+
+
+//变式，思路基本相同
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int chess[10][10];
+int ans=0;
+int n;
+int wqueen[10],bqueen[10];
+
+bool bislegal(int curr,int curc) {
+	if(chess[curr][curc]==0||wqueen[curc]==curr) return false;
+	for(int rec=1;rec<=curc;rec++) {
+		if(wqueen[rec]==curr) return false;
+		int rdiff=abs(wqueen[rec]-curr);
+		int cdiff=abs(rec-curc);
+		if(cdiff==rdiff) return false;
+	}
+}
+bool wislegal(int currow,int curcolumn) {
+	if(chess[currow][curcolumn]==0) return false;
+	for(int rec=1;rec<=curcolumn;rec++) {
+		if(wqueen[rec]==currow) return false;
+		int rdiff=abs(wqueen[rec]-currow);
+		int cdiff=abs(rec-curcolumn);
+		if(cdiff==rdiff) return false;
+	}
+}
+
+int c;
+
+void black_queen(int curcolumn) {
+	for(int row=1;row<=n;row++) {
+		if(bislegal(row,curcolumn)) {
+			bqueen[curcolumn]=row;
+			if(curcolumn!=n) {
+				black_queen(curcolumn+1);
+			}
+			else {
+				c++;
+				return ;
+			}
+		}
+	}
+}
+
+void white_queen(int curcolumn) {
+	for(int row=1;row<=n;row++) {
+		if(wislegal(row,curcolumn)) {
+			wqueen[curcolumn]=row;
+			if(curcolumn!=n) {
+				white_queen(curcolumn+1);
+			}
+			else {
+				black_queen(1);
+				return ;
+			}
+		}
+	}
+}
+
+int main() {
+	cin>>n;
+	for(int i=1;i<=n;i++) {
+		for(int j=1;j<=n;j++) 
+			cin>>chess[i][j];
+	}
+	white_queen(1);
+	printf("%d\n",ans);
+	return 0;
+}
+
+//不一定AC，但是我赶上啦
+
+//忏悔，每天上课看代码，挤时间上网站更新，这下就可以正常啦事情已经完啦
+//上面那个代码改了两天了，不知道哪里的问题，换种写法也不对

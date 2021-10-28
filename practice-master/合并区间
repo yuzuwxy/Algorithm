@@ -1,0 +1,78 @@
+给出一个区间的集合，请合并所有重叠的区间。
+示例 1:
+  输入: intervals = [[1,3],[2,6],[8,10],[15,18]]
+  输出: [[1,6],[8,10],[15,18]]
+  解释: 区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6].
+
+示例 2:
+  输入: intervals = [[1,4],[4,5]]
+  输出: [[1,5]]
+  解释: 区间 [1,4] 和 [4,5] 可被视为重叠区间。
+
+https://leetcode-cn.com/problems/merge-intervals/solution/he-bing-qu-jian-by-leetcode-solution/
+
+用什么vector 结构体它不香吗
+
+//AC代码如下：                                                           
+#include<bits/stdc++.h>                                                 
+using namespace std;
+
+struct node {
+	int L,R;
+}num[100];
+node ans[100];
+
+bool cmp(node x,node y) {
+	if(x.L!=y.L) return x.L<y.L;
+	else return x.R<y.R;
+}
+
+int maxx(int a,int b) {
+	if(a>b) return a;
+	else return b;
+}
+
+int main() {                                               //题解：
+	int n;                                                   //可以合并的两个区间一定满足这样的关系：部分重合或者包含与被包含。
+	scanf("%d",&n);                                          //所以说两个区间若能够重合，左边界是比较左的那一个，右边界是比较右的那一个；
+	for(int i=1;i<=n;i++) {                                  //对全部的数据进行升序排序后进行遍历，区间num[i]与区间num[i+1]的关系（无关，包含，部分重合）由两区间的由边界决定。
+		cin>>num[i].L;                                         
+		cin>>num[i].R;
+	}
+	sort(num+1,num+n+1,cmp);
+	//node ans[100];
+	int p=0;                              //用指针记录目前正在进行更新的区间编号
+	for(int i=1;i<=n;i++) {
+		if(!p||ans[p].R<num[i].L) {                 //对每一个重合后的区间进行保存与更新
+			ans[++p].L=num[i].L;                      //如果两区间无关，标志为已经存入的合并后的区间的右边界一定小于代判断的区间的左边界
+			ans[p].R=num[i].R;                        //并且注意提前应该存好第一个区间，否则后续判断以（0，0）开始
+		}
+		else ans[p].R=maxx(num[i].R,ans[p].R);
+	}
+	for(int i=1;i<=p;i++) {
+		printf("%d %d\n",ans[i].L,ans[i].R);
+	}
+	return 0;
+}
+
+
+//leetcode上过了的vector代码(虽然还是不懂整个代码应该怎么打)：
+
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& inte) {
+        if(inte.size()==0)
+            return {};
+        sort(inte.begin(),inte.end());
+        vector<vector<int> > merged;
+        for(int i=0;i<inte.size();++i){
+            int L=inte[i][0],R=inte[i][1];
+            if(!merged.size()||merged.back()[1]<L)
+                merged.push_back({L,R});
+            else merged.back()[1]=max(merged.back()[1],R);
+        }
+        return merged;
+    }
+};
+
+//虽然知道是啥意思，但是我可能暂时学不会STL了qwq

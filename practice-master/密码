@@ -1,0 +1,24 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+char ch[60];
+int main() {
+	scanf("%d",&n);
+	char c;
+	int i=1;
+	while(cin>>c) {
+		ch[i]=c;
+		i++;
+	}
+	for(int j=1;j<i;j++) {
+        //ch[j]=ch[j]+n;
+        /*if(ch[j]>'z') */ch[j]=(ch[j]-'a'+n)%26+'a';
+        cout<<ch[j];
+    }
+    printf("\n");
+	return 0;
+}
+
+
+
+我也不知道为啥加了两句话就有两个点咋都过不去

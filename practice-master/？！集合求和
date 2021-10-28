@@ -1,0 +1,49 @@
+//本来抖了个机灵用了高中集合知识，结果不知道为啥第一个总是-16，不管我输几qwq好难受
+
+//这是错误代码
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+	string s;
+	getline(cin,s);
+	int siz=0;
+	int num[30];
+	for(int i=0;i<s.size();i++) {
+		if(s[i]<='9'&&s[i]>='0') siz++;
+		num[siz]=(int)s[i]-'0';
+	}
+	int p=1; 
+	for(int j=1;j<=siz-1;j++) {
+		p*=2;
+	}
+	int sum=0;
+	for(int i=1;i<=siz;i++) {
+		sum+=num[i]*p;
+	}
+	printf("%d\n",sum);
+	return 0;
+}		
+
+//让我再改改
+
+//一直没懂为啥会一直不对
+
+
+//神仙代码！！！！！（震声
+
+#include<iostream>
+#include<cmath>
+using namespace std;
+int a[31],i=0,j;
+long long s=0;
+int main(){
+    //cout<<s;
+    while(cin>>a[i++]);//合写cin>>a[i];i++;   //cin读到空格，就可以输入每一个数
+    for(j=0;j<i;j++){		
+        s+=a[j];	
+    }			
+    s*=pow(2,i-2);//注意，i-2!   //完了这里不懂，数学没了       //因为每个数会加二的n-1次方个	
+    cout<<s;
+    return 0;
+}

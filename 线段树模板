@@ -1,0 +1,93 @@
+//今天好忙，有点水
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define MAXN 100010
+
+long long n,m;
+long long num[MAXN];
+long long sum[4*MAXN];
+long long tag[4*MAXN];
+
+void update(int k)  {sum[k]=sum[k*2]+sum[k*2+1];}
+
+void build(int k,int L,int R)
+{
+    //cnt++;
+    if(L==R) {sum[k]=num[L];return;}
+    int mid=(L+R)>>1;
+    build(k*2,L,mid);
+    build(k*2+1,mid+1,R);
+    update(k);
+}
+
+void addtag(int k,int l,int r,int x)
+{
+     tag[k]+=x;
+     sum[k]+=(long long)(r-l+1)*x;
+}
+
+void pushdown(int k,int l,int r)
+{
+     if(tag[k]==0) return;
+     int mid=l+r>>1;
+     addtag(k*2,l,mid,tag[k]);
+     addtag(k*2+1,mid+1,r,tag[k]);
+     tag[k]=0;
+}
+
+void add(int k,int L,int R,int x,int y,int z)
+{
+     if(L>=x&&R<=y)  {return addtag(k,L,R,z);}/*{sum[k]+=y;cout<<sum[k]<<endl;return;}*/
+     int mid=(L+R)>>1;
+     pushdown(k,L,R);
+     if(mid>=x) add(k*2,L,mid,x,y,z);
+     if(mid<y) add(k*2+1,mid+1,R,x,y,z); 
+     update(k);
+}
+
+long long ask(int k,int L,int R,int l,int r)
+{
+    if(L>=l&&R<=r) return sum[k];
+    if(L>r||R<l) return 0;
+    long long s=0;
+    int mid=(L+R)>>1;
+    pushdown(k,L,R);
+    //s+=ask(k*2,L,mid,l,r);
+    //s+=ask(k*2+1,mid+1,R,l,r);
+    if(l<=mid) s+=ask(k<<1,L,mid,l,r);
+    if(mid<r) s+=ask(k<<1|1,mid+1,R,l,r);
+    return s;
+}
+
+int main()
+{
+    //freopen("std.out","w",stdout);
+    scanf("%lld%lld",&n,&m);
+    for(int i=1;i<=n;i++)
+    {
+        scanf("%lld",&num[i]);
+    }
+    build(1,1,n);    
+    for(int i=1;i<=m;i++)
+    {
+        long long f,x,y;
+        scanf("%lld"/*%d%d"*/,&f/*,&x,&y*/);
+        if(f==1)
+        {
+            int l,r,w;
+            scanf("%d%d%d",&l,&r,&w);
+            add(1,1,n,l,r,w);
+            //cout<<f<<' '<<endl;
+        }
+        else {
+           int x,y;
+           scanf("%d%d",&x,&y);
+           printf("%lld\n",ask(1,1,n,x,y));
+        }
+    }
+    //for(int i=1;i<=cnt;i++) cout<<sum[i]<<' ';
+    return 0;
+}

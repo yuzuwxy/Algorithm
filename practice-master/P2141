@@ -1,0 +1,27 @@
+理解题意：集合中有几个数是另外两个数的和
+#include<bits/stdc++.h>
+using namespace std;
+
+int num[105];
+int flag[20010];
+int sum[20010];
+
+int main() {
+	int n;
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++) {
+		scanf("%d",&num[i]);
+		flag[num[i]]=1;                     //标记集合中满足提议的两个数之和可能是这些值
+	}
+	for(int i=1;i<n;i++) {
+		for(int j=i+1;j<=n;j++) {
+			sum[num[i]+num[j]]++;                     //实际上两个数的和可能是这些值
+		}
+	}
+	int ans=0;
+	for(int i=1;i<=20000;i++) {
+		if(sum[i]&&flag[i]) ans++;      //是集合中两个数之和并且和存在于集合中
+	}
+	printf("%d\n",ans);
+	return 0;
+}

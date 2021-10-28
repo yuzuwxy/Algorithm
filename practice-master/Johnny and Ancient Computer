@@ -1,0 +1,93 @@
+//题目就不详述了
+
+//我的莫名奇妙不知道哪里有问题的代码
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath> 
+#include<string>
+#include<cstring>
+
+using namespace std;
+    
+long long n;
+
+int main() {
+	scanf("%lld",&n);
+	for(int i=1;i<=n;i++) {
+		long long x,y,z;
+		int ans;
+		scanf("%lld%lld",&x,&y);
+		if((x>y&&x%y!=0)||(y>x&&y%x!=0)) {
+			printf("-1\n");
+		}
+		else {
+			if(x>y) z=x/y;
+			if(y>=x) z=y/x;
+			//cout<<z<<endl;
+			ans=0;
+			while(z>1) {
+				if(z%8==0) z/=8,ans++;
+				else if(z%4==0) z/=4,ans++;            //这里如果一直if就会多算，加else可以while每循环一次操作一次
+				else if(z%2==0) z/=2,ans++;
+				else break;
+			}
+			if(z==1) printf("%d\n",ans);
+			else printf("-1\n");
+		}
+	}
+	return 0;
+}
+
+//不知道为什么但是确实AC的代码
+
+#include <stdio.h>
+#include <math.h>
+ 
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while (t--) {
+		long long int a,b;
+		scanf("%lld %lld",&a,&b);
+		long long int ans;
+		if ((a>b&&a%b!=0)||(b>a&&b%a!=0)) {
+			printf("-1\n");
+		}
+		else {
+			if(a>b)	{
+				ans=a/b;
+			}
+			else{
+				ans=b/a;
+			}
+			long long int ct=0;
+			while (ans>1)
+			{
+				if(ans%8==0){
+					ans=ans/8;
+					ct++;
+				}
+				else if(ans%4==0){
+					ans=ans/4;
+					ct++;
+				}
+				else if(ans%2==0){
+					ans=ans/2;
+					ct++;
+				}
+				else{
+					break;
+				}
+			}
+			if (ans==1) {
+				printf("%lld\n",ct);
+			}
+			else{
+				printf("-1\n");
+			}
+		}
+	}
+	return 0;
+}

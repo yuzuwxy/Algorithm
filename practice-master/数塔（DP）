@@ -1,0 +1,40 @@
+//DP经典的数塔问题，之前打过但是其实不太懂，现在差不多了
+
+//AC模板#include<iostream>
+#include<string>
+#include<cstring>
+#include<cmath>
+#include<algorithm>
+
+using namespace std;
+
+int C,N;
+int tower[110][110];
+int dp[110][110];
+
+int main() {
+	scanf("%d",&C);
+	for(int i=1;i<=C;i++) {
+		scanf("%d",&N);
+		memset(dp,0,sizeof(dp));
+		memset(tower,0,sizeof(tower));
+		for(int j=1;j<=N;j++) {
+			for(int k=1;k<=j;k++) {
+				scanf("%d",&tower[j][k]);
+			}	
+		}
+		dp[1][1]=tower[1][1];
+		for(int j=2;j<=N;j++) {
+			for(int k=1;k<=j;k++) {
+				dp[j][k]=max(dp[j-1][k],dp[j-1][k-1])+tower[j][k];     //主要的是这个式子，实际运算当然是可以的，但是其实有时候不一定需要实操，逻辑理解也可
+			}
+		}
+		int ans=0;
+		for(int j=1;j<=N;j++) {
+			ans=max(dp[N][j],ans);
+		}
+		printf("%d\n",ans);
+	}
+	return 0;
+}
+	

@@ -1,0 +1,19 @@
+#include<iostream>
+#include<cstdio>
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	int day;
+	scanf("%d",&day);
+	int coin=0,a=0;
+	for(int i=1; ;i++) {
+		for(int j=1;j<=i;j++) {
+			coin+=i;
+			a++;
+			if(a==day) break;
+		}
+		if(a==day) break;
+	}
+	printf("%d\n",coin);
+	return 0;
+}

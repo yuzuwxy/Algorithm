@@ -1,0 +1,28 @@
+用于C++中对给定区间内元素进行排序，可升可降（默认为升序），头文件为<algorithm>
+语法：sort（start，end，cmp）
+      start表示起始地址，end是数字结束地址的下一位（划重点），cmp是排序方法，可不填，默认升序。
+对数组直接进行排序，例如对a[10]排序sort(a,a+10),是对a[10]中a[0]到a[9]进行升序排序。
+sort函数的排序是类似快排的排序方法，时间复杂度为n*log2(n),比冒泡排序和选择排序的效率高。
+但是sort排序是不稳定的排序，即会使两个相同元素的相对位置发生改变；
+没有第三个参数时，实现的是升序排序；
+加入第三个参数实现降序排序
+  需要加入一个比较函数
+    compare(int a,int b){
+      return a>b;
+    }
+    
+    sort(a,a+10,compare);
+也可对结构体进行排序
+  假设定义结构体node
+    struct node {
+      int a;
+      int b;
+      int c;
+    }
+  有一个node类型的数组 a[10] ,若对它进行的排序方法为：先按a值升序，如果a相同，再按b降序排序；如果b值相同就按c升序排序。
+  则有：
+    bool compare(node x,node y) {
+      if(x.a!=x.b) return x.a<y.a;
+      if(x.b!=x.c) return x.b>y.b;
+      return x.c<y.c;
+    }

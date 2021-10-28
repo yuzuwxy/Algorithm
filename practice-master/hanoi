@@ -1,0 +1,26 @@
+#include<cstdio>
+
+using namespace std;
+
+long long ans;
+
+long long move(int n,char a,char b,char c) {
+	if(n==3) {
+		ans=7;
+		return ans;
+	}
+	return move(n-1,'A','C','B')+1+move(n-1,'B','A','C');
+}
+	
+	
+	
+
+int main() {
+	int n;
+	scanf("%d",&n);
+	ans=move(n,'A','B','C');
+	printf("%lld\n",ans);
+	return 0;
+} 
+
+//递归，就是不知道细节但是逻辑非常好理解

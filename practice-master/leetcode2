@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+	vector <int> nums;
+	int target;
+	int n;
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++) {
+		int num;
+		cin>>num;
+		nums.push_back(num);
+	}
+	scanf("%d",&target);
+	vector<int>::iterator it=find(nums.begin(),nums.end(),target);
+	int a;
+	if(it==nums.end()) {
+		if(target>nums[nums.size()-1]) a=nums.size();
+		else {
+			for(int i=0;i<nums.size();i++) {
+				if(nums[i]>target) {
+					a=i;
+					break;
+				}
+			}
+		}
+	}
+	else {
+		a=&*it-&nums[0];
+	}
+	printf("%d\n",a);
+	return 0;
+}
+
+/*首次使用了迭代器，find()，以及查找的过程可以用lower_bound()函数优化，O(n)优化为O(log n)*/

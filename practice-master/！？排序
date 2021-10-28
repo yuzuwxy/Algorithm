@@ -1,0 +1,103 @@
+描述
+输入一行数字，如果我们把这行数字中的‘5’都看成空格，那么就得到一行用空格分割的若干非负整数（可能有些整数以‘0’开头，这些头部的‘0’应该被忽略掉，除非这个整数就是由若干个‘0’组成的，
+这时这个整数就是0）。
+
+你的任务是：对这些分割得到的整数，依从大到小的顺序排序输出。
+
+输入
+输入包含多组测试用例，每组输入数据只有一行数字（数字之间没有空格），这行数字的长度不大于2000。 输入数据保证：分割得到的非负整数不会大于100000000；输入数据不可能全由‘5’组成。
+
+输出
+对于每个测试用例，输出分割得到的整数排序的结果，相邻的两个整数之间用一个空格分开，每组输出占一行。
+
+输入样例 1 
+0051231232050775
+
+输出样例 1
+12312320 77 0
+
+//依旧是有AC代码（但不是我写的） 今天或明天补题解
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<string>
+#include<vector>
+
+using namespace std;
+
+int main()
+{
+    string a;
+    while(cin>>a)
+    {
+        vector<long> b;         //大佬们可能都比较喜欢STL
+        string c;
+        int j;
+        for(j=0;a[j]=='5';j++);         //把字符串前边的‘5’跳过去
+        for(int i=j;i<a.length();i++)               //开始把后边的字符串转化为数字
+        {
+            if(a[i]!='5')			
+                c+=a[i];                         //把每个“数字”转成字符串
+            else if(a[i-1]!='5')		//注意是a[i-1]!=5,因为如果直接else，可能会有连着几个五的情况，把c=""压进去 a[i-1]!=5才真正表示一个数的末尾
+            { 	
+                b.push_back(atol(c.c_str()));		//atol是C库里的函数，把字符串转化成长整型 	
+                c = "";			//清空 
+            }
+        }
+        
+        if(a[a.length()-1]!='5')		  //如果是一个末尾有5的字符串，最后一个有效数就已经被压进去了。如果末尾没有5，最后一个有效数就被存在c串里没有压进去
+            b.push_back(atol(c.c_str()));
+        sort(b.begin(),b.end(),greater<long>());		//对vector进行排序 
+        cout <<b[0];
+        
+        for(int i=1;i<b.size();i++)        //大佬的输出习惯，不在末尾留空格
+            cout<<" "<<b[i];
+        cout<<endl;
+    }
+} 
+
+//我不想等了，我要交了
+
+//大佬的代码
+
+//我的依旧用了字符串流依旧wa掉的代码（字符串流好难用呜呜呜
+
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<cstring>
+#include<cmath>
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int num[2000];
+
+bool cmp(int a,int b) {
+	return a>b;
+}
+
+int main() {
+	string st;
+	while(getline(cin,st)){
+		memset(num,0,sizeof(num));
+		int fiv=0;
+		for(int i=0;i<st.size();i++) {
+			if(st[i]=='5')  {
+				st[i]=' ';
+			}
+		}
+		stringstream ss(st);
+		int a,cnt=0;
+		while(ss>>a) {
+			num[++cnt]=a;
+		}
+		sort(num+1,num+cnt+1,cmp);
+		for(int i=1;i<=cnt;i++)  {
+			cout<<num[i]<<' ';
+		}
+		printf("\n");
+	}
+	return 0;
+}

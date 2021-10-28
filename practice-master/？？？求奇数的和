@@ -1,0 +1,74 @@
+给你n个整数，求他们中所有奇数的和。
+输入
+输入数据包含多个测试实例，每个测试实例占一行，每行的第一个数为n，表示本组数据一共有n个数，接着是n个整数ai。n<=1000，ai<=1000。
+
+输出
+输出每组中的所有奇数的和，对于测试实例，输出一行。如果不存在奇数，则输出0。
+
+输入样例 
+3 1 2 3
+4 2 3 4 5
+输出样例 
+4
+8
+
+//错误的代码
+//原因是用这种读法可能把  14  12  15   .....
+//读成    1 4 1 2 1 5...这个样子
+#include<iostream>
+#include<cstdio>
+#include<cmath>
+#include<cstring>
+#include<string>
+
+using namespace std;
+
+int main() {
+	string ss;
+	while(getline(cin,ss)) {
+		int sum=0;
+		for(int i=0;i<ss.size();i++) {
+			if(i!=0&&(ss[i]-'0')%2!=0&&ss[i]>='0'&&ss[i]<='9') sum+=ss[i]-'0';
+		}
+		printf("%d\n",sum);
+	}
+	return 0;
+}
+
+
+//修改的思路是借助快读的思路读入每组数据
+
+
+
+
+//新写了一段bug，没用快读，希望能改出来，毕竟用了挺多新东西的
+
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<cstring>
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+	stringstream ss;
+	string st;
+	vector<int> a;
+	while(getline(cin,st)) {
+		ss.clear();
+		ss.str("");
+		ss<<st;
+		while(ss.str().size()!=0) {
+			int num;
+			ss>>num;
+			a.push_back(num);
+		}
+		int sum=0;
+		for(int i=0;i<a.size()-1;i++) {
+			if(a[i]%2!=0)  sum+=a[i];
+		}
+		cout<<sum<<endl;
+	}
+	return 0;
+}

@@ -1,0 +1,18 @@
+#include<iostream>
+#include<algorithm>
+#include<string> 
+#include<cstdio>
+using namespace std;
+int main() {
+	int num[5];
+	//scanf("%d %d %d",&num[0],&num[1],&num[2]);
+	cin>>num[0]>>num[1]>>num[2];
+	sort(num,num+3);
+	char a,b,c;
+	cin>>a>>b>>c;
+	cout<<num[a-'A']<<' '<<num[b-'A']<<' '<<num[c-'A'];
+	printf("\n");
+	return 0;
+}
+
+/*不知道为啥用gets输不进去字符串*/

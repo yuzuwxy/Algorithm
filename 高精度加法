@@ -1,0 +1,77 @@
+#include<bits/stdc++.h>
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+int a[600],b[600],c[600];
+char a1[600],b1[600];
+int main() {
+	cin>>a1;
+	cin>>b1;    //一般不会用gets读入，据说gets的源代码有bug（啊不，只是gets是C里面的，C++14还是多少就已经放弃了）
+	int lena=strlen(a1),lenb=strlen(b1);
+	for(int i=0;i<=lena-1;i++) a[lena-i]=a1[i]-48;  //倒序存储 
+	for(int i=0;i<=lenb-1;i++) b[lenb-i]=b1[i]-48;
+	int lenc=1;
+	int x=0;
+	while(lenc<=lena||lenc<=lenb) {
+		c[lenc]=a[lenc]+b[lenc]+x;
+		x=c[lenc]/10;
+		c[lenc]%=10;
+		lenc++;
+	}
+	c[lenc]=x;
+	if(c[lenc]==0) lenc--;
+	for(int i=lenc;i>=1;i--) {
+		cout<<c[i];
+	}
+	cout<<endl;
+	return 0;
+}
+
+//我自己写的高精加！！
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<cmath>
+#include<algorithm>
+
+using namespace std;
+
+int a[110],b[110];
+int r;
+int c[110];
+
+int main() {
+	string aa,bb;
+	cin>>aa;
+	cin>>bb;
+	//scanf("%s",&aa);
+	//scanf("%s",&bb);
+	int asize=aa.size(),bsize=bb.size();
+	//cout<<asize<<endl;
+	for(int i=asize-1;i>=0;i--) {
+		a[asize-i]=aa[i]-'0';
+		//cout<<aa[i]<<endl;
+	}
+	//for(int i=1;i<=asize;i++) cout<<a[i];
+	//cout<<endl; 
+	for(int i=bsize-1;i>=0;i--) {
+		b[bsize-i]=bb[i]-'0';	
+	}
+	int len=max(asize,bsize);
+	for(int i=1;i<=len;i++) {
+		int cnt=a[i]+b[i]+r;
+		c[i]=cnt%10;
+		r=cnt/10;
+		//cout<<r<<endl;
+	}
+	if(r!=0)	c[len+1]=r;
+	int i=len+1;
+	while(!c[i]) i--;
+	for(i;i>=1;i--) {
+		cout<<c[i];
+	}	
+	printf("\n");
+	return 0;
+}
+//好叭，其实都差不多

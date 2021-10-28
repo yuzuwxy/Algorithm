@@ -1,0 +1,57 @@
+描述
+
+Calculate the average of several numbers.Easy?Go!
+
+输入
+The first line consists of an integer T（T>0）,indicating the number of test cases. The first line of each case consists of an integer N ,indicating the number of integers in 
+this case. Each of the next N lines in this case consists of N integers which is in 32-bit(N>=0).
+
+输出
+For each test case , please output the average in a line.
+
+输入样例
+3
+5
+1 1 2 3 5
+4
+-5 5 -10 10
+1
+-1
+输出样例
+2
+0
+-1
+
+//我在C++中学英语系列
+
+//一个小坑：注意题目哦，输入是32位的，输出不一定呢。求和应该用long long
+
+#include<bits/stdc++.h>
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<cstring>
+using namespace std;
+long long t,n,a;
+long long s;
+int main()
+{
+ 	scanf("%lld",&t); 
+ 	for(int i=1;i<=t;i++)
+ 	{
+  		scanf("%lld",&n);
+  		s=0;
+ 		if(n==0) printf("%lld\n",s);
+  		else
+  		{
+   			for(int j=1;j<=n;j++)
+   			{
+    			scanf("%lld",&a);
+    			s+=a;
+   			}
+   		s/=n;
+   		printf("%lld\n",s);
+  		}
+	 }
+ 	return 0;
+}

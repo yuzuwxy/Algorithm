@@ -1,0 +1,99 @@
+https://www.luogu.com.cn/problem/P1957
+这个题整个都很神奇，好好看题解哟
+
+太神奇了叭，等着消化
+
+
+#include <iostream>
+#include <string>
+#include <sstream>
+using namespace std;
+int main ()
+{
+	int n;
+	cin>>n;//输入n 
+	char ch;
+	string s[n];//这个！！是个字符串数组！！用来存每个算式，每个算式都是一个字符串s[i]；而且string可以直接出长度，方便输出算式长度  
+	for(int i=0;i<n;i++)//开始循环输入 
+	{
+		string st;
+		stringstream io;//stringstream流用来转换，因为最后输出的算式是字符串类型存在s[i]里，要把数字转成字符串
+		int a,b,ans=0;
+		if(!(cin>>a))//用cin判断输入的变量a数据类型 ： 如果不是数字 
+		{
+			cin.clear();       //清除缓存重新输入 字母和第一个数字
+			cin>>ch>>a;
+		}
+		cin>>b;         //另一个数据
+		io<<a;io>>s[i];io.clear();//把第一个数转化成字符串类型存在s[i]里；输入的数据没有字母时，标志运算类型的字符ch不会改变，与上一行一样
+		if(ch=='a')
+		{
+			ans=a+b;
+			s[i]+='+';       //字符串可以直接相加往后续
+			io<<b;io>>st;io.clear();//io每次用完后要记得清空哦
+			s[i]+=st;
+			s[i]+='=';
+			io<<ans;io>>st;io.clear();
+			s[i]+=st;        //一直往后续知道整个算式存进去
+		}//以此类推
+	if(ch=='b')
+		{
+			ans=a-b;
+			s[i]+='-';
+			io<<b;io>>st;io.clear();
+			s[i]+=st;
+			s[i]+='=';
+			io<<ans;io>>st;io.clear();
+			s[i]+=st;
+		}
+	if(ch=='c')
+		{
+			ans=a*b;
+			s[i]+='*';
+			io<<b;io>>st;io.clear();
+			s[i]+=st;
+			s[i]+='=';
+			io<<ans;io>>st;io.clear();
+			s[i]+=st;
+		}
+	}
+	for(int i=0;i<n;i++)//循环输出结果 
+	{
+		cout<<s[i]<<endl;
+		cout<<s[i].size();    //size()函数得到字符串长度
+		if(i!=n-1)cout<<endl;
+	}
+}
+
+
+
+
+#include <iostream> //cin & cout 用iostream
+#include <cstring> //memset & strlen 用cstring
+#include <cstdio> //sscanf & sprintf 用cstdio
+using namespace std;
+int main(){
+	char a;//a用于存储运算符
+	int n,c,d;//n存储个数不解释，cd存储两个数字
+	char s[100],b[10];//s存储最终的字符串，b临时变量
+	cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>b;//cin读到空格
+		if(b[0]>='a' && b[0]<='z'){
+			a=b[0];//如果是运算符就存入a，然后输入数字
+			cin>>c>>d;
+		}else{
+			sscanf(b,"%d",&c);//如果是数字就转换b为int存储到第一个数字
+			cin>>d;//然后输入剩下的第二个数字
+		}
+		memset(s,0,sizeof(s));//清空原有的字符串，防止长度判断错误
+		if(a=='a')//用sprintf格式化
+			sprintf(s,"%d+%d=%d",c,d,c+d);       //把这个这个这个转化成字符串
+		else if(a=='b')
+			sprintf(s,"%d-%d=%d",c,d,c-d);
+		else if(a=='c')
+			sprintf(s,"%d*%d=%d",c,d,c*d);
+		cout<<s<<endl<<strlen(s)<<endl;//输出字符串和字符串长度
+	}
+	return 0;
+}

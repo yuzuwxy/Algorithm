@@ -1,0 +1,43 @@
+#include<iostream>
+#include<cstdio>
+using namespace std;
+
+int max(int a,int b,int c) {
+    int maxx;
+    if(a>b) maxx=a;
+    else maxx=b;
+    if(c>maxx) maxx=c;
+    return maxx;
+}
+
+int mini(int a,int b,int c) {
+    int minn;
+    if(a<b) minn=a;
+    else minn=b;
+    if(minn>c) minn=c;
+    return minn;
+}
+
+int gcd(int a,int b) {
+    int gcdd;
+    for(int i=a/2;i>=1;i--)
+    {
+        if(a%i==0&&b%i==0) {
+            gcdd=i;
+            break;
+        }
+    }
+    return gcdd;
+}
+
+
+int main() {
+    int a,b,c;
+    scanf("%d%d%d",&a,&b,&c);
+    int minn=mini(a,b,c);
+    int maxx=max(a,b,c);
+    int gcdd=gcd(minn,maxx);
+    printf("%d/%d\n",minn/gcdd,maxx/gcdd);
+    return 0;
+}
+/*最大公约数*/

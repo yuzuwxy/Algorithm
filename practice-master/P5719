@@ -1,0 +1,21 @@
+#include<iostream>
+#include<cstdio>
+#include<vector> 
+using namespace std;
+int main() {
+	vector<int> a,b;
+	int n,k;
+	scanf("%d%d",&n,&k);
+	float suma=0;
+	for(int i=1;i<=n;i++) {
+		if(i%k==0) {
+			a.push_back(i);
+			//else b.push_back(i);
+			suma+=i;
+		}
+	}
+	float sum=0.5*n*(n+1);
+	printf("%.1f ",suma/a.size());
+	printf("%.1f\n",(sum-suma)/(n-a.size()));
+	return 0;
+}

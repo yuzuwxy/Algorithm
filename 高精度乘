@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int a[300],b[300],c[1000000];
+string s1,s2;
+
+int main()
+{
+	cin>>s1; cin>>s2;
+	int len1=s1.size();
+	int len2=s2.size();
+	for(int i=1;i<=len1;i++) a[i]=s1[len1-i]-'0';//倒序存储
+	for(int i=1;i<=len2;i++) b[i]=s2[len2-i]-'0';//倒序存储
+	for(int j=1;j<=len2;j++)//从下到上乘
+	{
+		for(int i=1;i<=len2;i++)
+		{
+			c[j-1+i]+=a[i]*b[j];
+			c[j-1+i+1]+=c[j-1+i]/10;
+			c[j-1+i]%=10;
+		}
+	}
+	int len=len1+len2;
+	while(c[len]==0&&len>=2) len--;//删除多余的前导0
+	for(int i=len;i>=1;i--) printf("%d",c[i]);
+	return 0;
+}
+
+//阶乘计算
+//这是我自己写的AC代码噢
+//对乘法的计算有了新的理解呢
+#include<bits/stdc++.h>
+using namespace std;
+
+int a[20],b[20],num[3001];
+string s1,s2;
+
+void cheng(int q) {
+	int r=0;
+	for(int i=1;i<=3000;i++) {
+		int b=num[i]*q+r;
+		num[i]=b%10;
+		r=b/10;
+	}
+}	
+
+int main()
+{
+	int n;
+	scanf("%d",&n);
+	if(n==0) {
+		printf("1\n");
+		return 0;
+	}
+	num[1]=1;
+	for(int i=1;i<=n;i++) {
+		cheng(i);
+	}
+	int cnt=3000;	
+	while(num[cnt]==0) cnt--;
+	for(int i=cnt;i>=1;i--) {
+		printf("%d",num[i]);
+	}
+	return 0;
+}

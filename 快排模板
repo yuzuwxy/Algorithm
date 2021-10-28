@@ -1,0 +1,89 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+
+#define ll long long
+#define MAXN 100010
+
+using namespace std;
+
+int n;
+int a[MAXN];
+int r[MAXN];
+
+int read()
+{
+    int now=0;
+    int flag=1;
+    char s;
+    while((s<'0'||s>'9')&&s!='-') s=getchar();
+    if(s=='-') flag=-1,s=getchar();
+    while(s>='0'&&s<='9')
+    {
+        now=now*10;
+        now+=s-'0';
+        s=getchar();
+    }
+    now=now*flag;
+    return now;
+}
+
+void gb(int s,int t)
+{
+    if(s==t) return;
+    int mid=(s+t)>>1;
+    gb(s,mid);
+    gb(mid+1,t);
+    int i=s,j=mid+1,k=s;
+    while(i<=mid&&j<=t)
+    {
+         if(a[i]<=a[j])
+         {
+              r[k]=a[i];
+              k++;
+              i++;
+         }
+         else
+         {
+              r[k]=a[j];
+              j++;
+              k++;
+         }
+    }
+    while(i<=mid)
+    {
+        r[k]=a[i];
+        k++;
+        i++;
+    }
+    while(j<=t)
+    {
+        r[k]=a[j];
+        k++;
+        j++;
+    }
+    for(int i=s;i<=t;i++)
+    { 
+        a[i]=r[i];
+    }
+}
+              
+int main()
+{
+    n=read();
+    for(int i=1;i<=n;i++)
+    {
+        a[i]=read();
+    }
+    gb(1,n);
+    for(int i=1;i<=n;i++)
+    {
+         printf("%d ",a[i]);
+    }
+    printf("\n");
+    return 0;
+}
+
+
+
+//这几天太水了，真的

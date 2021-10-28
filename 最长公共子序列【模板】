@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+const int MAXN=1000010;
+
+int a[MAXN];
+int b[MAXN];
+int mapp[MAXN];
+int f[MAXN];
+int n;
+
+int func()
+{
+    memset(f,0x7f,sizeof(f));
+    for(int i=1;i<=n;i++)
+    {
+        *upper_bound(f+1,f+n+1,b[i])=b[i];
+    }
+    return lower_bound(f+1,f+n+1,0x3f3f3f3f)-(f+1);
+}
+
+int main()
+{
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++)
+    {
+        scanf("%d",&a[i]);
+        mapp[a[i]]=i;
+    }
+    for(int i=1;i<=n;i++)
+    {
+        scanf("%d",&a[i]);
+        b[i]=mapp[a[i]];
+    }
+    printf("%d\n",func());
+    return 0;
+}  

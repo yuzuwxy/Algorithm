@@ -1,0 +1,154 @@
+vector是向量类型（？），可以理解为动态数组，使用应添加头文件#include<vector>。
+当无法知道所需要的数组空间有多大时，使用vector可以达到最大节约空间的目的。
+vector的定义：
+    vector<int> a;
+    //定义向量a，其中含有的元素类型为int整型（尖括号中为元素类型名，可以是任意类型的合法元素）。
+vector的初始化：
+    vector<int> a(10);
+    //含有10个整型元素，不具有初值。
+    
+    vector<int> a(10,1);
+    //十个元素，初值均为一。
+    
+    vector<int> a(b);
+    //用向量b给向量a赋值，a的值完全等价b的值（？不是很理解向量，同vector可以，但是有点卡卡的）。
+    
+    vector<int> a(b.begin(),b.begin()+3);
+    //将向量(!)b中的[0,3)左闭右开区间中的元素赋值给a。
+    
+    int b[7]={1,2,3,4,5,6,7};
+    vector<int> a(b,b+7);
+    //从数组（！）中获得初值，同样是左闭右开[0,7)。
+vector的常用内置函数：
+    #include<vector>
+    vector<int> a,b;
+    
+    //b为向量，将b的0-2个元素赋值给向量a
+    a.assign(b.begin(),b.begin()+3);
+
+    //a含有4个值为2的元素
+    a.assign(4,2);
+
+    //返回a的最后一个元素
+    a.back();
+
+    //返回a的第一个元素
+    a.front();
+
+    //返回a的第i元素,当且仅当a存在
+    a[i];
+
+    //清空a中的元素
+    a.clear();
+    
+    //判断a是否为空，空则返回true，非空则返回false
+    a.empty();
+
+    //删除a向量的最后一个元素
+    a.pop_back();
+
+    //删除a中第一个（从第0个算起）到第二个元素，也就是说删除的元素从a.begin()+1算起（包括它）一直到a.begin()+3（不包括它）结束
+    a.erase(a.begin()+1,a.begin()+3);
+    
+    //在a的最后一个向量后插入一个元素，其值为5
+    a.push_back(5);
+
+    //在a的第一个元素（从第0个算起）位置插入数值5,
+    a.insert(a.begin()+1,5);
+    //例如原本为1，2，3，4, 插入后元素为1，5，2，3，4
+
+    //在a的第一个元素（从第0个算起）位置插入3个数，其值都为5
+    a.insert(a.begin()+1,3,5);
+
+    //b为数组，在a的第一个元素（从第0个元素算起）的位置插入b的[3,6),从第0个算起
+    a.insert(a.begin()+1,b+3,b+6);
+    //例如a中为1，2，3，4,b中的元素为1，4，7，5，3，9，2，6, 则该步操作后a中元素变为1，5，3，9，2，3，4。
+
+    //返回a中元素的个数
+    a.size();
+
+    //返回a在内存中总共可以容纳的元素个数
+    a.capacity();
+
+    //将a的现有元素个数调整至10个，多则删，少则补，其值随机
+    a.resize(10);
+
+    //将a的现有元素个数调整至10个，多则删，少则补，其值为2
+    a.resize(10,2);
+
+    //将a的容量扩充至100，
+    a.reserve(100);
+
+    //b为向量，将a中的元素和b中的元素整体交换
+    a.swap(b);
+    
+vector中添加元素：
+    vector<int>a;
+    for(int i=0;i<10;++i){a.push_back(i);}
+    //直接添加
+    
+    int a[6]={1,2,3,4,5,6};
+    vector<int> b;
+    for(int i=0;i<=4;++i){b.push_back(a[i]);}
+    //添加数组中的元素
+
+    int a[6]={1,2,3,4,5,6};
+    vector<int>b;
+    vector<int>c(a,a+4);
+    for(vector<int>::iterator it=c.begin();it<c.end();++it)
+    {
+    	b.push_back(*it);
+    }
+    //从现有向量中选择元素添加，使用迭代器；
+
+    //误区（！！！！！！）
+    vector<int>a;
+    for(int i=0;i<10;++i){a[i]=i;}
+    //下标只能用来获取已经存在的元素，定义时变为vector<int> a(10)可行。
+    //对就是这里如果定义的时候没给vector元素个数，就用push_back();给了元素个数就能用a[i]=i.（试过了，用混会发生奇奇怪怪的事情）
+    
+读取vector中的元素：
+    //通过下标读取
+    int a[6]={1,2,3,4,5,6};
+    vector<int>b(a,a+4);
+    for(int i=0;i<=b.size()-1;++i){cout<<b[i]<<endl;}
+    
+    //通过迭代器读取
+    int a[6]={1,2,3,4,5,6};
+    vector<int>b(a,a+4);
+    for(vector<int>::iterator it=b.begin();it!=b.end();it++){cout<<*it<<"  ";}
+
+常用算法：
+    排列，倒置，复制，查找，包含的头文件为#include<algorithm>
+    //对a中的从a.begin()（包括它）到a.end()（不包括它）的元素进行从小到大排列
+    sort(a.begin(),a.end());
+    //左闭右开，没有查到是否可以自选区段；
+    //！！！a.end()返回的是末尾元素再下一个元素的迭代器,它指向的地址里面没有元素的，不需要参与排序
+    
+    //对a中的从a.begin()（包括它）到a.end()（不包括它）的元素倒置，但不排列，如a中元素为1,3,2,4,倒置后为4,2,3,1
+    reverse(a.begin(),a.end());
+  
+    //把a中的从a.begin()（包括它）到a.end()（不包括它）的元素复制到b中，从b.begin()+1的位置（包括它）开始复制，覆盖掉原有元素
+    copy(a.begin(),a.end(),b.begin()+1);
+
+    //在a中的从a.begin()（包括它）到a.end()（不包括它）的元素中查找10，若存在返回其在向量中的位置（！！是位置）。
+    //如果查找失败即没有这个函数，返回的是a.end()的位置，即最后一个元素下标加一（！！！）
+     find(a.begin(),a.end(),10);
+    
+    lower_bound()函数：返回序列中第一个大于或等于指定值的数的位置
+    upper_bound()函数：返回序列中第一个大于指定值的数的位置（！！！注意都是位置）
+    //用法如下：
+      vector<int>::iterator it=lower_bound(nums.begin(),nums.end(),target);  //迭代器的取得位置（注意不能直接int a=...,因为函数取得的是位置而不是数值）
+      int ans=&*it-&nums[0];         //取地址符
+      return ans;      /总的来说与find()格式类似
+      本质是使用二分法找到，时间复杂度为log
+
+find()函数的使用：
+    int temp1[]={ 1,3,2,4,5,0 };
+    vector<int> temp(temp1,temp1+6);   //将temp1数组中的元素赋给temp
+    vector<int>::iterator it=find(temp.begin(),temp.end(),3);            //，使用迭代器，返回的是地址
+    int index=&*it-&temp[0];///放入迭代器中得到容器中的位置     
+    printf("%d\n",index);
+
+/*学过也没怎么用过，特作此摘录，供当前及以后学习*/
+//震惊我居然忘记我总结过一遍！！！

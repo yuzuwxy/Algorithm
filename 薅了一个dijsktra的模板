@@ -1,0 +1,130 @@
+#include<string>
+#include<queue> 
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<cstring>
+#include<cmath>
+#include<algorithm>
+
+#define MAXN (int)1e5
+#define inf 0x3f3f3f3f
+
+using namespace std;
+bool vis[MAXN];
+int dist[MAXN];
+int max_num;
+struct Edge{
+	int next;  //指向下一个元素 
+	int to;  //点 
+	int dis;//距离 
+}edge[4*MAXN+7];
+
+int num_edge;
+int head[MAXN];//初始化为0 
+
+struct heap{ //构建优先队列
+	int idx;
+	int weight;
+};
+struct cmp{  //优先队列 比较函数
+ bool operator()(heap a,heap b)
+	{
+		return a.weight>b.weight;
+	}
+};
+priority_queue <heap,vector<heap>,cmp> q;
+
+// struct node{
+// 	int data;
+// 	int weight;
+// 	node *next;
+// };
+int n;
+
+void add_edge(int x,int y,int weight)  //链式前向星建图
+{
+	edge[++num_edge].next=head[x];
+	edge[num_edge].to=y;
+	edge[num_edge].dis=weight;
+	head[x]=num_edge;
+}
+
+void dijkstra(int num)
+{
+	dist[num]=0;
+	max_num=n;
+
+	heap h;
+	h.idx=num;
+	h.weight=0;
+	num_edge=0;
+	q.push(h);
+
+	while(q.size())
+	{
+		int min=inf,u=-1;
+//		for(int j=1;j<=max_num;j++)  //每次查找都需要n时间， 
+//		{
+//			if(!vis[j]&&dist[j]<=min)
+//			{
+//				min=dist[j];
+//				u=j;
+//			}
+//		}
+		h=q.top();
+		q.pop();
+		min=h.weight;
+		u=h.idx;
+		if(vis[u])
+			continue;
+		vis[u]=true;
+		for(int i=head[u];i;i=edge[i].next)
+		{
+			if(min+edge[i].dis<dist[edge[i].to])
+			{
+				dist[edge[i].to]=min+edge[i].dis;
+				if(vis[edge[i].to]) //已经确定了最优点了 
+				    continue;
+				h.idx=edge[i].to; //点 
+				h.weight=dist[edge[i].to];
+				q.push(h);
+			}
+		}
+	}
+}
+// void show(int a[],int n)
+// {
+// 	for(int i=1;i<n;i++)
+// 	{
+// 		printf("%d",a[i]);
+// 		if(i!=n-1)
+// 			printf(" ");
+// 	}
+// 	printf("\n");
+// }
+int main()
+{
+	int m,x,y,weight,start,endd;
+	memset(vis,false,sizeof(vis));
+	memset(dist,inf,sizeof(dist));
+	memset(head,0,sizeof(head));
+
+	scanf("%d%d%d%d",&n,&m,&start,&endd);
+
+	while(m--)
+	{
+		scanf("%d%d%d",&x,&y,&weight);
+		if(x==y)
+			continue;
+		else
+		{
+			add_edge(x,y,weight);
+            add_edge(y,x,weight);
+		}
+	}
+	dijkstra(start);
+	// show(dist,n+1);
+    printf("%d\n",dist[endd]);
+	return 0;
+}

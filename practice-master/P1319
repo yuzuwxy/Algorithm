@@ -1,0 +1,88 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int tu[210][210];
+int n;
+
+int main() {
+	//int cnt=0;
+	int k=0;
+	bool flag=1;
+	scanf("%d",&n);
+	int sum=0;
+	while(sum<n*n) {
+		int x;
+		scanf("%d",&x);
+		sum+=x;
+		flag=!flag;                   //ture和false互转
+		for(int j=1;j<=x;j++) {
+			k++;
+			printf("%d",flag);                 //printf输出bool型变量以整型的形式输出
+			if(k%n==0) printf("\n");
+		}
+	}
+	return 0;
+}
+
+
+续集篇：
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	vector<string> ju;
+	string s;
+	while(cin>>s) {
+		ju.push_back(s);
+	}
+	printf("%d ",ju.size());
+	s.clear();
+	for(int i=0;i<ju.size();i++) {
+		s+=ju[i];
+	}
+	char a='0';
+	int num=0;
+	for(int i=0;i<s.length();i++) {
+		if(a==s[i]) {
+			num++;
+		}
+		else {
+			printf("%d ",num);
+			a=s[i];
+			num=1; 
+		}
+	}
+	printf("%d ",num);
+	printf("\n");
+	return 0;
+}
+
+
+喔好像也没啥问题，在线IDE里可以过但是Dev里输不出东西
+
+
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	char c,a='0';
+	int num[40010],i=1;
+	memset(num,0,sizeof(num));
+	int tot=0; 
+	while(cin>>c) {
+		tot++;
+		if(a==c) {
+			num[i]++;
+		}
+		else {
+			a=c;
+			i++;
+			num[i]++;
+		}
+	}
+    int ans=sqrt(tot);                       
+	printf("%d ",ans);              //为啥直接printf("%d",sqrt(tot))是错的 , 但是printf("%.0lf",sqrt(tot))是对的
+	for(int j=1;j<=i;j++) {
+		printf("%d ",num[j]);
+	}
+	printf("\n");
+	return 0;
+}

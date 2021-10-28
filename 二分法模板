@@ -1,0 +1,26 @@
+//二分法的代码实现
+
+//整数域 
+int func(int left,int right) {
+	left=1;
+	right=n;
+	int ans;
+	while(left<=right) {
+		int mid=(left+right)>>1;
+		if(check(mid)) ans=mid,left=mid+1;
+		else right=mid-1;     //可据实际情况调整 
+	}
+	return ans; 
+}
+
+
+
+//实数域
+int func(double left,double right) {
+	double mid;
+	while(abs(left-right)>dlt){      //dlt为精度，比如0.0001
+		mid=(left+right)/2.0;
+		if(check(mid)) right=mid;      //这一小部分可以根据实际情况调整 
+		else left=mid;
+	}
+	return left;    //当然 right也可 

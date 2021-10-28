@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int n;
+	string s;
+	scanf("%d",&n);
+	//getline(cin,s);
+	cin>>s;
+	for(int i=1;i<=n;i++) {
+		int num;
+		//int a;
+		string st;
+		scanf("%d",&num);
+		if(num==1) {
+			cin>>st;
+			s+=st;
+			printf("%s\n",s.c_str());
+		}
+		if(num==2) {
+			int a,b;
+			scanf("%d%d",&a,&b);
+			string s1=s.substr(a,b);
+			s=s1;
+			printf("%s",s.c_str());
+			printf("\n");
+		}
+		if(num==4) {
+			//string st;
+			cin>>st;
+			string::size_type pos=s.find(st);
+			if(pos!=string::npos)
+				cout<<pos<<endl;
+			else cout<<-1<<endl;
+		}
+		if(num==3) {
+			int a;
+			cin>>a>>st;
+			s=s.insert(a,st);
+			printf("%s\n",s.c_str());
+		}
+	}
+	return 0;
+}

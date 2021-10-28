@@ -1,0 +1,60 @@
+//好废啊我
+multiset是<set>库里的一个类型，仿佛相当有用。可以看作一个序列，插入删除一个数都可以在O(logn)的时间内完成，维护方式是平衡二叉树（红黑树），而且可以时刻保证序列中的数是有序的，可以存在重
+复的数。
+
+//简单程序演示multiset的应用
+
+int main() {
+    int x;
+    scanf("%d",&x);
+    multiset<int> h;         //定义multiset类型的h
+    while(x!=0) {
+        h.insert(x);
+        scanf("%d",&x);
+    }
+    while(!h.empty()) {        //当h为空的时候h.empty()==true
+        __typeof(h.begin()) c=h.begin();           //__typeof(h.begin()) 是一个数据类型？不太懂，但是换成指针型就不对了
+        printf("%d ",*c);        //注意这里，指针类型
+        h.erase(c);             //删除，变量直接是需要删除的值
+    }
+}
+对于输入数据：32 61 12 2 12 0,该程序的输出是：2 12 12 32 61。
+
+另外，multiset还可以放入其他的类型，如string。还有其他自定义的类型比如struct 和 class（这个没用过诶）。
+ struct Node {
+    int x,y;
+    };
+multiset<Node> str;
+
+但是这样的话multiset就不知道怎么去比较一个自定义的数据类型的大小，因此要自定义multiset里Node变量类型的大小关系。
+定义一个比较类cmp，cmp里的operator函数的作用是比较自定义Node类型a和b的大小（这里分别以x和y作为第一和第二关键字） 
+
+struct cmp {
+    bool operator(const Node&a,cnost Node&b) {
+        if(a.x==b.x) return a.y<b.y;
+        return a.x<b.x;
+    }
+}
+并且将语句multiset<Node> str改为multiset<Node,cmp> str  ，就定义了一个可以排序的自定义类型的multiset
+
+
+以及multiset的一些常用函数：
+//multiset和set基本相同，区别在于multiset不会去重，而set会自动去重。也就是说这些常用的函数，其实set也是一样的
+//multiset自行替换成自定义的变量名
+
+multiset.begin()        返回指向第一个元素的迭代器
+multiset.end()          返回指向最后一个元素的迭代器
+multiset.clear()        清楚所有元素
+multiset.count(x)       返回所有值为x的元素个数
+multiset.empty()        如果集合为空，返回值为true
+multiset.erase(x)       删除集合中值为x的元素
+//有这样的用法 multiset.erase(multiset.begin())  删除第一个元素
+multiset.find(x)        返回第一个被查找到的元素的迭代器（用法待定）              printf("%d",*h.find(5)-*h.begin());    
+multiset.insert(x)      插入值为x的元素
+multiset.size()         返回元素的个数
+//常用的也差不多就这些了吧
+
+//还有用迭代器遍历的方法
+for (auto it = myMultiSet.begin(); it != myMultiSet.end(); ++it) {      //auto自动确定数据类型
+		cout << *it << " ";
+	}

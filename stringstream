@@ -1,0 +1,121 @@
+stringstream是C++提供的字符串流，要使用stringstream必须包含其头文件：
+        #include<sstream>
+        using namespace std;
+        stringstream ss
+<sstream > 库定义了三种类：istringstream、ostringstream和stringstream，分别用来进行流的输入、输出和输入输出操作。一般情况下使用stringstream就足够，因为字符串要频繁的涉及到输入输出。
+通过插入器(<<)和析取器(>>)这两个运算符可以直接对stringstream上的数据输入输出，而将stringstream中的全部数据输出则是使用成员函数str()，其有两种形式：
+        void str();     //无参形式，用于将stringstream流中的数据以string字符串的形式输出
+        void str(const string& s);     //(不咋懂）以字符串为参数，用以覆盖stringstream流中的数据
+        
+        需要注意的是：
+                ss.str("");        //字符串流清零， 将流中的数据全部清除
+        示例代码： 
+            #include<iostream>
+            #include<string>
+            #include<sstream>
+            using namespace std;
+            int main(){
+	            stringstream ss;
+	            ss<<"hello ";                // 在流中插入"hello "
+	            ss<<"world!";                //在流中插入"world!"
+	            cout<<ss.str()<<endl;       //将流中的数据以字符串的形式输出"hello world!"
+                return 0;
+            }
+            //对于stringstream而言，操作<<是一直往字符串流中写字符，而不是覆盖之前输入的字符
+            //这一点不同于str()成员函数方法，str()函数创建的是一个临时的string对象，这个string对象在函数str()语句结束就会被销毁
+            //因而一般使用时先声明一个string对象s，将str()赋值给s
+            //const string s=ss.str(), 这样会有一个string拷贝的过程
+            //又或者是const string& s=ss.str(), 这样就是s直接引用了ss.str()这个临时变量，这样就延长了临时变量ss.str()的生命周期，使得ss.str()的生命结束时刻与s一样
+ss.clear()成员函数：
+    通过clear()成员函数可以清除流的错误状态，主要用在stringstream重复使用时或者多个stringstream对象构造时清空，不然之前的缓冲就停留在输入输出流中
+    对于同一个stringstream对象重复赋值，就需要先对流使用clear()函数清空流的状态，此时流占用的内存没有改变，会一直增加（stringstream不主动释放内存），若想改变内存（一般是清除内存，减少
+   内存消耗），需要再配合使用str("")清空stringstream的缓存。
+		代码示例：                                 //这里不懂了，改天问
+			stringstream ss;
+			int a,b;
+			ss<<"80";
+			ss>>a;
+			cout<<ss.str()<<' '<<ss.str().length()<<endl;
+			ss.clear();
+			ss.str("");
+			cout<<ss.str()<<' '<<ss.str().length()<<endl;						//输出内容为
+			ss<<"90";										//80 2
+			ss>>b;											// 0
+			cout<<ss.str()<<' '<<ss.str().length()<<endl;						//90 2
+		
+		如果没有ss.clear() 语句，输出内容为
+			80 2
+			0
+			0
+		如果没有ss.str(“”) 语句，输出内容为
+			80 2
+			80 2
+			8090 4
+		//跟说好的不一样？？那就只记住要重置流中的内容，要ss.str() 和 ss.clear() 一起用就好啦
+stringstream和fstream
+	通过重载的<<和>>运算符可以将文件流中的数据输出到C++字符串中，它们之间的媒介是缓冲区streambuf，可由流的成员函数rdbuf()读取。
+		#include <iostream>
+		#include <sstream>//stringstream流的头文件
+		#include <fstream>
+		using namespace std;
+		int main()
+		{
+       			 string str;
+        		 ifstream in;
+       			 in.open("Hello.txt");
+        		//读取文件的缓冲内容到数据流中
+        		 stringstream ss;
+       			 ss << in.rdbuf();
+       			 in.close();//关闭文件
+        		 str = ss.str();//将stringstream流中的数据赋值给string类型字符串
+			 const char* p=str.c_str();   //将字符串内容转化为C_string类型（才能输出）    //输出的时候直接cout<<p<<endl;就可
+        		 return 0;
+		}
+stringstream通常是用来做数据转换的，用于字符串和其他类型的转换
+		#include <iostream>
+		#include <string>
+		#include <sstream>
+		using namespace std;
+		int main()
+		{
+		    string str1("How are you? 123 1 4.368");
+		    stringstream ss(str1);//构造函数初始化
+		    cout<<ss.str()<<endl;
+			string str2;
+   		 	for(int i=0;i<3;i++)
+    		{
+    			ss>>str2;
+    			cout<<str2<<" ";
+			}
+			cout<<endl;
+			int a;
+			ss>>a;														
+			cout<<a<<endl;																	/*输出内容为
+			bool b;																				How are you? 123 1 4.368     //cout<<ss.str() 
+			ss>>b;																				How are you?				//三个cout<<str2' '; 
+			cout<<b<<endl;																		123							//cout<<a;
+			float c;																			1 							//cout<<b;
+			ss>>c;																				4.368						//cout<<c;
+			cout<<c<<endl;																		I am fine!					//重置后的ss             		*/
+			ss.clear();								//由上面的代码可知，从stringstream流中的数据输入字符串到一个变量里，是以遇到空格跳到下一个字符串的这样的形式连续读取的。
+			ss.str("I am fine!");//重新赋值
+			while(ss>>str2)//不断读取
+			{
+				cout<<str2<<" ";
+			}	
+			return 0;		
+		}
+
+	
+
+
+
+
+
+
+
+
+
+
+
+

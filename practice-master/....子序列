@@ -1,0 +1,44 @@
+今天没有，我太水了。现在只有用完了的流量和时断时续的网。
+今天有点忙，之后会好好学，明天会更5次
+
+//更个**的5次，还能走就不错了
+
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+const int MAXN=1000010;
+
+int a[MAXN];
+int b[MAXN];
+int mapp[MAXN];
+int f[MAXN];
+int n;
+
+int func()
+{
+    memset(f,0x7f,sizeof(f));
+    for(int i=1;i<=n;i++)
+    {
+        *upper_bound(f+1,f+n+1,b[i])=b[i]; 
+    }
+    return lower_bound(f+1,f+n+1,0x3f3f3f3f)-(f+1); 
+}
+
+int main()
+{
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++)
+    {
+        scanf("%d",&a[i]);
+        mapp[a[i]]=i;   
+    }
+    for(int i=1;i<=n;i++)
+    {
+        scanf("%d",&a[i]);
+        b[i]=mapp[a[i]];
+    }
+    printf("%d\n",func());
+    return 0;
+}  

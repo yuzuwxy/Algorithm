@@ -1,0 +1,25 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	//int s1[25],s2[25],s3[45];
+	int p[100];
+	memset(p,0,sizeof(p));
+	int ss1,ss2,ss3;
+	scanf("%d%d%d",&ss1,&ss2,&ss3);
+	for(int i=1;i<=ss1;i++) {
+		for(int j=1;j<=ss2;j++) {
+			for(int k=1;k<=ss3;k++) {
+				p[j+k+i]++;
+			}
+		}
+	}
+	int c=-1;
+	int maxx;
+	for(int i=3;i<=ss1+ss2+ss3;i++) {
+		if(p[i]&&p[i]>c) c=p[i],maxx=i;
+	}
+	printf("%d\n",maxx);
+	return 0;
+}
+
+/*判断指标和输出数值*/

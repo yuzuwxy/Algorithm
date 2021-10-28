@@ -1,0 +1,32 @@
+//题目的单词都不认识
+//纯英文的题目，涉及数学公式和符号，不太好复制
+
+http://codeforces.com/contest/1007/problem
+
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<cmath>
+#include<algorithm>
+
+using namespace std;
+
+int C,N,M;
+int a[110];
+//int dp[110][110];
+
+int main() {
+	scanf("%d",&C);
+	for(int i=1;i<=C;i++) {
+		scanf("%d%d",&N,&M);
+		int sum=0,x;
+		for(int j=1;j<=N;j++) {
+			scanf("%d",&x);
+			sum+=x;                                 //自己看看公式，其实就是把每个数加起来的意思，也就看着吓人
+		}                                         //这题考的其实是数学叭
+		if(sum==M) printf("YES\n");
+		else printf("NO\n");
+	}
+	return 0;
+}
+	

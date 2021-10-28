@@ -1,0 +1,57 @@
+题目描述
+一个长度为 l(3\le l\le255)l(3≤l≤255) 的字符串中被反复贴有 boy 和 girl 两单词，后贴上的可能覆盖已贴上的单词（没有被覆盖的用句点表示），最终每个单词至少有一个字符没有被覆盖。
+问贴有几个 boy 几个 girl？
+
+输入格式
+一行被被反复贴有boy和girl两单词的字符串。
+
+输出格式
+两行，两个整数。第一行为boy的个数，第二行为girl的个数。
+
+输入输出样例
+输入 #1
+......boyogirlyy......girl.......
+输出 #1
+4
+2                                             //看起来像道水题，其实还怪有讲究的
+
+//这是我的垃圾代码
+
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	int boy=0,girl=0;
+	string s;
+	getline(cin,s);
+	for(int i=0;i<s.size();i++) {
+		if(s[i]=='b'&&s[i+1]=='o'&&s[i+2]=='y')
+			s[i]=s[i+1]=s[i+2]='X',boy++;
+		if(s[i]=='g'&&s[i+1]=='i'&&s[i+2]=='r'&&s[i+3]=='l')
+			s[i]=s[i+1]=s[i+2]=s[i+3]='X',girl++;                                       //刚打出来：哇活学活用我真是天才
+	}                                                                               //跑完数据发现漏洞真的太多
+	for(int i=0;i<s.size();i++) {                                                   //贴完之后有只剩一个的，剩两个的，全都有的
+		if(s[i]=='b'||s[i]=='o'||s[i]=='y') boy++;                                    //光写if肯定有一大堆
+		if(s[i]=='g'||s[i]=='i'||s[i]=='r'||s[i]=='l') girl++;
+	}
+	printf("%d\n%d\n",boy,girl);
+	return 0;
+}
+
+
+//大佬的AC代码，我真是学到了
+#include<bits/stdc++.h> 
+using namespace std; 
+int main() { 
+	int boy=0,girl=0;
+	string st; 
+	cin>>st;
+	for(int i=0;i<st.length();i++){                                             //品这几个或||，细品
+		if (st[i]=='b'||st[i+1]=='o'||st[i+2]=='y')                               //遮的只剩一个的时候一定能加上一个
+			boy++;                                                                  //剩两个字母的时候剩下bo，oy都会被加而且只加一次，剩下一个字母也是一样。但是注意会越界
+		if (st[i]=='g'||st[i+1]=='i'||st[i+2]=='r'||st[i+3]=='l')                    //虽然[]运算不会提示越界
+			girl++;							
+	}									
+	cout<<boy<<endl;
+	cout<<girl<<endl;
+	return 0;
+}

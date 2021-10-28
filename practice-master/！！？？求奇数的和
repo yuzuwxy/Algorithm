@@ -1,0 +1,79 @@
+//两天没更真是罪孽
+
+描述
+给你n个整数，求他们中所有奇数的和。
+
+输入
+输入数据包含多个测试实例，每个测试实例占一行，每行的第一个数为n，表示本组数据一共有n个数，接着是n个整数ai。n<=1000，ai<=1000。
+
+输出
+输出每组中的所有奇数的和，对于测试实例，输出一行。如果不存在奇数，则输出0。
+
+输入样例 
+3 1 2 3
+4 2 3 4 5
+
+输出样例 1
+4
+8
+
+
+//简单题，而且AC代码好简单
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+	int n=0;
+	while(cin>>n) {
+		int k=0,sum=0;
+		for(int i=0;i<n;i++) {
+			cin>>k;
+            if(k%2!=0) {
+            	sum+=k;
+			}
+		}
+		cout<<sum<<endl;
+	}
+	return 0;
+}
+
+
+//while的条件如果写while(scanf("%d",&n))会RE
+//要写scanf("%d",&n)==1 ,就是完美的AC代码
+
+//以及我用了字符串流（好高级）结果一直WA掉的代码
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<cstring>
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+	stringstream ss;
+	string st;
+	while(getline(cin,st)) {
+		ss.clear();
+		ss.str("");
+		ss.str(st);
+		int n;
+		ss>>n;
+		int sum=0;
+		for(int i=1;i<=n;i++)
+		{
+			int a;
+			ss>>a;
+			if(a%2!=0) sum+=a;
+		}
+		cout<<sum<<endl;
+	}
+	return 0;
+}
+
+
+//希望将来有一天我进了A协能用内部数据测一下
+
